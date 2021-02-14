@@ -4,11 +4,11 @@ from forms import ContacForm
 import smtplib
 import os
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("secretkey")
+app.config['SECRET_KEY'] = os.getenv("secretkey")
 Bootstrap(app)
 
-my_email = os.environ.get("email")
-password = os.environ.get("password")
+my_email = os.getenv("email")
+password = os.getenv("password")
 
 @app.route("/")
 def home():
