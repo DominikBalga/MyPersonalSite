@@ -1,0 +1,18 @@
+{% include 'header.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+<div class="col-lg-12 poza">
+        <h1 class = "pozdrav non-index">Contact Me</h1><br><br>
+    </div>
+</div>
+</section>
+<div class="center-block">
+    {% if message_sent:%}
+    <h2 style="color : #fddb3a">!YOUR MESSAGE HAS BEEN SENT!</h2>
+    {% endif %}
+    <h2>Send me an Email to - balga.domo@gmail.com</h2>
+    <h2>or </h2>
+    <h2> use the form below</h2>
+    <hr>
+{{ wtf.quick_form(form) }}
+</div>
+{% include 'footer.html' %}

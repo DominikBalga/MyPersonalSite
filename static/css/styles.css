@@ -1,0 +1,122 @@
+
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    font-family: 'Frank Ruhl Libre', serif;
+}
+.poza{
+background-color: #fddb3a;
+padding: 3% 10%;
+margin-right: 0;
+}
+.navigacia {
+ background-color: #52575d;
+ padding: 1% 10%;
+}
+#logo{
+font-size : 1.8rem;
+font-weight : bold;
+}
+h1{
+font-size : 3rem;
+font-family: 'Asap', sans-serif;
+}
+.pozdrav{
+margin:0% auto;
+color: black;
+}
+.non.index{
+text-align: center;
+}
+.intro-item{
+color : #ffd369;
+background-color: #52575d;
+text-align: center;
+padding: 3% 7%;
+}
+.intro-icon{
+font-size: 4rem;
+padding-bottom: 20px;
+}
+.intro-icon:hover{
+color: #fddb3a;
+}
+.whitespace{
+padding: 0 0
+}
+.nl{
+font-size : 1.6rem;
+}
+#carousel{
+background-color: #ffd369;
+text-align: center;
+padding-top : 2%;
+}
+
+.carousel-item{
+padding: 3% 10%;
+}
+.carousel-img{
+margin-bottom : 25px;
+width: 200px;
+border-radius: 50%;
+}
+
+#contactme{
+background-color: #52575d;
+color : #ffd369;
+text-align: center;
+padding-top: 5%;
+padding-bottom: 5%;
+}
+.contact-btn{
+padding-top: 25px;
+}
+.btn{
+color: #ffd369;
+border-color: #ffd369;
+}
+.btn:hover{
+background-color: #fddb3a;
+}
+.social-icon{
+font-size: 1.8rem;
+padding-right: 1%;
+padding-left: 1%;
+color: #52575d;
+}
+h4{
+font-size: 1.5rem;
+}
+footer{
+text-align: center;
+background-color: #fddb3a;
+padding: 1% 10%;
+}
+.footer-item{
+padding-top: 1%;
+padding-bottom: 0.25%;
+}
+.social-icon:hover{
+color: black;
+}
+
+.center-block{
+background-color: #52575d;
+margin: 0 0;
+padding: 3% 10%;
+line-height: 2.5;
+font-size : 1.4rem;
+color : #f6f4e6;
+}
+p{
+margin : 0 0;
+padding-bottom: 10px;
+}
+a{
+
+}
