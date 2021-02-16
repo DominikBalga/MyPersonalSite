@@ -124,3 +124,10 @@ a{
 .intr{
 background-color: #52575d;
 }
+
+.content-mobile{
+display: none;
+}
+@media screen and (max-width: 768px) {
+.content-mobile {display: block;}
+}
