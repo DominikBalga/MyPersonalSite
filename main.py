@@ -1,22 +1,60 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,redirect,url_for
 from flask_bootstrap import Bootstrap
-from forms import ContacForm
+from forms import ContacForm, ProjectForm
+from flask_ckeditor import CKEditor
+from flask_sqlalchemy import SQLAlchemy
 import smtplib
 import os
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("secretkey")
 Bootstrap(app)
+ckeditor = CKEditor(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
 my_email = os.getenv("email")
 password = os.getenv("password")
 
+class Project(db.Model):
+    __tablename__ = "projects"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    subtitle = db.Column(db.String(250), unique=True, nullable=False)
+    img_url = db.Column(db.String(250), nullable=False)
+
+db.create_all()
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    all_projects = db.session.query(Project).all()
+    return render_template("index.html",projects=all_projects)
 
-@app.route("/my-projets")
+
+@app.route("/add-project", methods = ["POST","GET"])
+def add_project():
+    form = ProjectForm()
+    if form.validate_on_submit():
+        project_name=form.data["name"]
+        project_subtitle=form.data["subtitle"]
+        project_text=form.data["body"]
+        project_img=form.data["img_url"]
+        new_project =  Project(title=project_name,
+                               subtitle=project_subtitle,
+                               body=project_text,
+                               img_url=project_img)
+        db.session.add(new_project)
+        db.session.commit()
+        return redirect(url_for("myprojects"))
+    return render_template("addproject.html", form=form)
+
+@app.route("/my-projects")
 def myprojects():
-    return "<h1>Nothing here yet, in progress</h1>"
+    all_projects = db.session.query(Project).all()
+    return render_template("allprojects.html",projects=all_projects)
 
 @app.route("/about-me")
 def aboutme():

@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+<div class="col-lg-12 poza">
+        <h1 class = "pozdrav">My projects.</h1>
+
+    </div>
+</div>
+</section>
+<div class="center-block">
+    {% for project in projects %}
+    <div class="col-lg-12 intro-item project">
+    <a href="#" class="project-link"><h1>{{project.title}}</h1></a>
+    <h2>{{project.subtitle}}</h2>
+        <hr>
+    </div>
+    {% endfor %}
+</div>
+{% include 'footer.html' %}

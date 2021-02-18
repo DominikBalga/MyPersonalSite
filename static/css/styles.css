@@ -63,7 +63,8 @@ padding: 3% 10%;
 .carousel-img{
 margin-bottom : 25px;
 width: 200px;
-border-radius: 50%;
+height: 200px;
+border-radius: 100%;
 }
 
 #contactme{
@@ -130,4 +131,14 @@ display: none;
 }
 @media screen and (max-width: 768px) {
 .content-mobile {display: block;}
+}
+
+.project{
+text-align: left;
+}
+.project-link{
+color: #ffd369;
+}
+.project-link:hover{
+color: #fddb3a;
 }
