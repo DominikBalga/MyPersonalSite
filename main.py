@@ -37,6 +37,7 @@ def home():
 @app.route("/add-project", methods = ["POST","GET"])
 def add_project():
     form = ProjectForm()
+    round = 1
     if form.validate_on_submit():
         project_name=form.data["name"]
         project_subtitle=form.data["subtitle"]
@@ -49,7 +50,7 @@ def add_project():
         db.session.add(new_project)
         db.session.commit()
         return redirect(url_for("myprojects"))
-    return render_template("addproject.html", form=form)
+    return render_template("addproject.html", form=form, round=round)
 
 @app.route("/my-projects")
 def myprojects():
