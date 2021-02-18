@@ -39,12 +39,12 @@
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
       {% for project in projects %}
-      {% if round=1%}
-      {{round= round + 1}}
+      {% if round=1 : %}
+      {{round = round + 1}}
     <div class="carousel-item active">
-        {% else %}
+      {% else %}
     <div class="carousel-item">
-        {% endif %}
+       {% endif %}
         <h2>{{project.title}}</h2>
         <br>
         <img src="{{project.img_url}}" alt="{{project.title}}" class="carousel-img" >
