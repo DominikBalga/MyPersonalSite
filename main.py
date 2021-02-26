@@ -33,6 +33,10 @@ def home():
     all_projects = db.session.query(Project).all()
     return render_template("index.html",projects=all_projects)
 
+@app.route("/projects/<int:id>")
+def project(id):
+    project = Project.query.filter_by(id=id).first()
+    return render_template("project.html", project=project)
 
 @app.route("/add-project", methods = ["POST","GET"])
 def add_project():
