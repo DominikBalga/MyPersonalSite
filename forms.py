@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField
+from wtforms import StringField, SubmitField, TextAreaField, PasswordField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditorField
 
@@ -16,3 +16,8 @@ class ProjectForm(FlaskForm):
     body = CKEditorField('Text',validators=[DataRequired()])
     img_url = StringField('image url', validators=[DataRequired(),URL()])
     submit = SubmitField("SAVE")
+
+class LoginForm(FlaskForm):
+    email = StringField("Admin Email", validators=[DataRequired()])
+    password = PasswordField("Admin Password", validators=[DataRequired()])
+    submit = SubmitField("Let Me In!")

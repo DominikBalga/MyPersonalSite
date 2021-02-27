@@ -1,8 +1,10 @@
-from flask import Flask, render_template,redirect,url_for
+from flask import Flask, render_template,redirect,url_for,flash
 from flask_bootstrap import Bootstrap
-from forms import ContacForm, ProjectForm
+from forms import ContacForm, ProjectForm, LoginForm
 from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, login_user, LoginManager, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
 import smtplib
 import os
 
@@ -14,9 +16,41 @@ ckeditor = CKEditor(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 my_email = os.getenv("email")
 password = os.getenv("password")
+
+class User(UserMixin, db.Model):
+    _tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+
+@app.route('/admin', methods=["GET", "POST"])
+def admin():
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        user = User.query.filter_by(email=email).first()
+        # Email doesn't exist or password incorrect.
+        if not user:
+            flash("That email does not exist, please try again.")
+            return redirect(url_for('login'))
+        elif not check_password_hash(user.password, password):
+            flash('Password incorrect, please try again.')
+            return redirect(url_for('login'))
+        else:
+            login_user(user)
+            return redirect(url_for('home'))
+    return render_template("adminlogin.html", form=form)
+
 
 class Project(db.Model):
     __tablename__ = "projects"
@@ -39,6 +73,7 @@ def project(id):
     return render_template("project.html", project=project)
 
 @app.route("/add-project", methods = ["POST","GET"])
+@login_required
 def add_project():
     form = ProjectForm()
     round = 1
