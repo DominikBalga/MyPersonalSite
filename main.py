@@ -1,6 +1,6 @@
 from flask import Flask, render_template,redirect,url_for,flash
 from flask_bootstrap import Bootstrap
-from forms import ContacForm, ProjectForm, LoginForm
+from forms import ContacForm, ProjectForm, LoginForm, RegisterForm
 from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required
@@ -10,10 +10,11 @@ import os
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("secretkey")
+app.config['SECRET_KEY'] = os.environ.get("secretkey")
+secret = os.environ.get("secret")
 Bootstrap(app)
 ckeditor = CKEditor(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get["DATABASE_URL"]
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -42,10 +43,10 @@ def admin():
         # Email doesn't exist or password incorrect.
         if not user:
             flash("That email does not exist, please try again.")
-            return redirect(url_for('login'))
+            return redirect(url_for('admin'))
         elif not check_password_hash(user.password, password):
-            flash('Password incorrect, please try again.')
-            return redirect(url_for('login'))
+            flash('Password incorrect, please try again or register')
+            return redirect(url_for('admin'))
         else:
             login_user(user)
             return redirect(url_for('home'))
@@ -61,6 +62,31 @@ class Project(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 db.create_all()
+
+@app.route('/register', methods=["GET", "POST"])
+def adminregister():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if User.query.filter_by(email=form.email.data).first():
+            return redirect(url_for('admin'))
+        elif form.secret.data == secret:
+            print("i did this")
+            hash_and_salted_password = generate_password_hash(
+                form.password.data,
+                method='pbkdf2:sha256',
+                salt_length=8
+            )
+            new_user = User(
+                email=form.email.data,
+                password=hash_and_salted_password,
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for("home"))
+        flash("BAD ADMIN SECRET, IF YOU WANT TO MODIFY PROJECTS ASK ADMIN AT BALGA.DOMO@GMAIL.COM FOR SECRET")
+
+    return render_template("registeradmin.html", form=form)
 
 @app.route("/")
 def home():
