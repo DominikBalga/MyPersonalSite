@@ -3,18 +3,18 @@ from flask_bootstrap import Bootstrap
 from forms import ContacForm, ProjectForm, LoginForm, RegisterForm
 from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required
+from flask_login import UserMixin, login_user, LoginManager, login_required,current_user,logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import smtplib
 import os
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("secretkey")
-secret = os.environ.get("secret")
+app.config['SECRET_KEY'] = os.getenv("secretkey")
+secret = os.getenv("secret")
 Bootstrap(app)
 ckeditor = CKEditor(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -50,7 +50,7 @@ def admin():
         else:
             login_user(user)
             return redirect(url_for('home'))
-    return render_template("adminlogin.html", form=form)
+    return render_template("adminlogin.html", form=form,user=current_user)
 
 
 class Project(db.Model):
@@ -86,17 +86,17 @@ def adminregister():
             return redirect(url_for("home"))
         flash("BAD ADMIN SECRET, IF YOU WANT TO MODIFY PROJECTS ASK ADMIN AT BALGA.DOMO@GMAIL.COM FOR SECRET")
 
-    return render_template("registeradmin.html", form=form)
+    return render_template("registeradmin.html", form=form,user=current_user)
 
 @app.route("/")
 def home():
     all_projects = db.session.query(Project).all()
-    return render_template("index.html",projects=all_projects)
+    return render_template("index.html",projects=all_projects,user=current_user)
 
 @app.route("/projects/<int:id>")
 def project(id):
     project = Project.query.filter_by(id=id).first()
-    return render_template("project.html", project=project)
+    return render_template("project.html", project=project,user=current_user)
 
 @app.route("/add-project", methods = ["POST","GET"])
 @login_required
@@ -115,12 +115,12 @@ def add_project():
         db.session.add(new_project)
         db.session.commit()
         return redirect(url_for("myprojects"))
-    return render_template("addproject.html", form=form, round=round)
+    return render_template("addproject.html", form=form, round=round,user=current_user)
 
 @app.route("/my-projects")
 def myprojects():
     all_projects = db.session.query(Project).all()
-    return render_template("allprojects.html",projects=all_projects)
+    return render_template("allprojects.html",projects=all_projects,user=current_user)
 
 @app.route("/about-me")
 def aboutme():
@@ -143,8 +143,11 @@ def contactme():
                                                     f"Email: {email}\n"
                                                     f"Text : {text}\n")
             message_sent=True
-    return render_template("contactme.html",form=form,message_sent=message_sent)
-
+    return render_template("contactme.html",form=form,message_sent=message_sent,user=current_user)
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":

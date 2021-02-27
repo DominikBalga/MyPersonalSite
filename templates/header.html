@@ -40,12 +40,21 @@
       <li class="nav-item nl">
         <a class="nav-link" href="{{url_for('contactme')}}">Contact |</a>
       </li>
+      {% if user.is_authenticated: %}
+        <li class="nav-item nl">
+        <a class="nav-link" href="{{url_for('add_project')}}">Add new project |</a>
+      </li>
+        <li class="nav-item nl">
+        <a class="nav-link" href="{{url_for('logout')}}">Log out</a>
+      </li>
+      {% else: %}
         <li class="nav-item nl">
         <a class="nav-link" href="{{url_for('adminregister')}}">Register as admin |</a>
       </li>
         <li class="nav-item nl">
         <a class="nav-link" href="{{url_for('admin')}}">Log in as admin</a>
       </li>
+     {% endif %}
     </ul>
   </div>
   </nav>
