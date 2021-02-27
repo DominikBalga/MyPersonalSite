@@ -152,6 +152,16 @@ def logout():
 @app.route('/downloadcert')
 def downloadcert():
     return send_from_directory('static',
+                              filename="images/cert.pdf", as_attachment=True)
+
+@app.route('/downloadcven')
+def downloadcert():
+    return send_from_directory('static',
+                               filename="images/cert.pdf", as_attachment=True)
+
+@app.route('/downloadcvsk')
+def downloadcert():
+    return send_from_directory('static',
                                filename="images/cert.pdf", as_attachment=True)
 
 if __name__ == "__main__":
