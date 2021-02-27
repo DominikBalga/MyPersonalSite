@@ -155,14 +155,14 @@ def downloadcert():
                               filename="images/cert.pdf", as_attachment=True)
 
 @app.route('/downloadcven')
-def downloadcert():
+def downloadcven():
     return send_from_directory('static',
-                               filename="images/cert.pdf", as_attachment=True)
+                               filename="images/cvenDominikBalga.pdf", as_attachment=True)
 
 @app.route('/downloadcvsk')
-def downloadcert():
+def downloadcvsk():
     return send_from_directory('static',
-                               filename="images/cert.pdf", as_attachment=True)
+                               filename="images/cvskDominikBalga.pdf", as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
