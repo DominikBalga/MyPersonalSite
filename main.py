@@ -124,7 +124,7 @@ def myprojects():
 
 @app.route("/about-me")
 def aboutme():
-    return render_template("aboutme.html")
+    return render_template("aboutme.html",user=current_user)
 
 
 @app.route("/contact-me",methods=["GET","POST"])
