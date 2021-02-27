@@ -1,4 +1,4 @@
-from flask import Flask, render_template,redirect,url_for,flash
+from flask import Flask, render_template,redirect,url_for,flash, send_from_directory
 from flask_bootstrap import Bootstrap
 from forms import ContacForm, ProjectForm, LoginForm, RegisterForm
 from flask_ckeditor import CKEditor
@@ -148,7 +148,11 @@ def contactme():
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
+@app.route('/downloadcert')
+@login_required
+def downloadcert():
+    return send_from_directory('static',
+                               filename="images/cert.pdf", as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
