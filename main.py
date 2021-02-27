@@ -148,8 +148,8 @@ def contactme():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
 @app.route('/downloadcert')
-@login_required
 def downloadcert():
     return send_from_directory('static',
                                filename="images/cert.pdf", as_attachment=True)
