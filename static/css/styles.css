@@ -119,6 +119,9 @@ margin : 0 0;
 padding-bottom: 10px;
 }
 a{
+color: #fddb3a;
+}
+a:hover{
 color: white;
 }
 
