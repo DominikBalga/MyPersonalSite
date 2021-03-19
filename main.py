@@ -163,6 +163,33 @@ def downloadcven():
 def downloadcvsk():
     return send_from_directory('static',
                                filename="images/cvskDominikBalga.pdf", as_attachment=True)
+@app.route('/deleteproject/<int:id>')
+@login_required
+def deleteproject(id):
+    project_to_delete = Project.query.get(id)
+    db.session.delete(project_to_delete)
+    db.session.commit()
+    return redirect(url_for('myprojects'))
+
+@app.route("/editproject/<int:id>", methods=["GET", "POST"])
+@login_required
+def editproject(id):
+    project = Project.query.get(id)
+    edit_form = ProjectForm(
+        name=project.title,
+        subtitle=project.subtitle,
+        img_url=project.img_url,
+        body=project.body
+    )
+    if edit_form.validate_on_submit():
+        project.title = edit_form.name.data
+        project.subtitle = edit_form.subtitle.data
+        project.img_url = edit_form.img_url.data
+        project.body = edit_form.body.data
+        db.session.commit()
+        return redirect(url_for("project", id=project.id))
+
+    return render_template("addproject.html", form=edit_form, is_edit=True, user=current_user)
 
 if __name__ == "__main__":
     app.run(debug=True)

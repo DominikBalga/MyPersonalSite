@@ -1,8 +1,11 @@
 {% include 'header.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 <div class="col-lg-12 poza">
-        <h1 class = "pozdrav">add new project</h1>
-
+     {% if is_edit: %}
+            <h1 class = "pozdrav">Edit this project</h1>
+            {% else: %}
+            <h1 class = "pozdrav">add new project</h1>
+            {% endif %}
     </div>
 </div>
 </section>

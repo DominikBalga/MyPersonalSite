@@ -38,11 +38,13 @@
     </div>
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
+      {% if projects|length > 0 %}
       <div class="carousel-item active">
           <h2>{{projects[0].title}}</h2>
         <br>
         <img src="{{projects[0].img_url}}" alt="{{projects[0].title}}" class="carousel-img" >
         <h3>{{projects[0].subtitle}}</h3>
+      {% endif %}
     </div>
       {% for project in projects[1:] %}
     <div class="carousel-item">
