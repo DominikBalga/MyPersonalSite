@@ -163,6 +163,13 @@ def downloadcven():
 def downloadcvsk():
     return send_from_directory('static',
                                filename="images/cvskDominikBalga.pdf", as_attachment=True)
+
+@app.route('/downloadvbacert')
+def downloadvbacert():
+    return send_from_directory('static',
+                               filename="images/VBAcertificate.pdf", as_attachment=True)
+
+
 @app.route('/deleteproject/<int:id>')
 @login_required
 def deleteproject(id):
