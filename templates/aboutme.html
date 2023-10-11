@@ -27,7 +27,7 @@
        A 1 year experience as a International trade manager at Roal Group in Nitra .
     </li>
     <li>
-       And other part-time jobs to get by as students, but More details of that in my <a href="{{url_for('downloadcven')}}">CV</a>
+       And other part-time jobs to get by as students, but More details of that in my CV below</a>
     <br>.
     </li>
 </ul>
@@ -40,13 +40,13 @@
     <li>CV's and cover letters are sometimes limited and i think this is a easier way to show what i know</li>
 </ul>
     <h2>Downloadables:</h2>
-    <a href="{{url_for('downloadcert')}}">Python udemy certificate.pdf</a>
-    <br>
-    <a href="{{url_for('downloadcven')}}">English CV.pdf</a>
-    <br>
-    <a href="{{url_for('downloadcvsk')}}">Slovak CV.pdf</a>
-    <br>
-    <a href="{{url_for('downloadvbacert')}}">VBA Linked in learning certificate.pdf</a>
+    {% for certificate in certificates %}
+    <li>
+        <a href="{{ url_for('download_cert', certificate_name=certificate) }}">
+            {{ certificate }}
+        </a>
+    </li>
+    {% endfor %}
 </div>
 </section>
 {% include 'footer.html' %}

@@ -5,16 +5,24 @@ from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required,current_user,logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.routing import BaseConverter
+from pathlib import Path
 import smtplib
 import os
 
+class CertificateNameConverter(BaseConverter):
+    def to_python(self, value):
+        return value
+
+    def to_url(self, value):
+        return str(value)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("secretkey")
-secret = os.getenv("secret")
+app.config['SECRET_KEY'] = "test"#os.getenv("secretkey")
+secret = "xd" #os.getenv("secret")
 Bootstrap(app)
 ckeditor = CKEditor(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = r"sqlite:///C:/Users/Dominik/OneDrive/Počítač/Repos/testdb/dtps.db" #os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -122,9 +130,18 @@ def myprojects():
     all_projects = db.session.query(Project).all()
     return render_template("allprojects.html",projects=all_projects,user=current_user)
 
+app.url_map.converters['certificate'] = CertificateNameConverter
+
+certificates_path = Path("./static/images/cert")
+certificates = [certificate.stem for certificate in certificates_path.iterdir() if certificate.is_file()]
+@app.route('/downloadcert/<certificate:certificate_name>')
+def download_cert(certificate_name):
+    certificate = certificates_path / (certificate_name + ".pdf")
+    return send_from_directory(certificate.parent, filename=certificate.name, as_attachment=True)
+
 @app.route("/about-me")
 def aboutme():
-    return render_template("aboutme.html",user=current_user)
+    return render_template("aboutme.html",user=current_user,certificates=certificates)
 
 
 @app.route("/contact-me",methods=["GET","POST"])
@@ -148,27 +165,6 @@ def contactme():
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
-@app.route('/downloadcert')
-def downloadcert():
-    return send_from_directory('static',
-                              filename="images/cert.pdf", as_attachment=True)
-
-@app.route('/downloadcven')
-def downloadcven():
-    return send_from_directory('static',
-                               filename="images/cvenDominikBalga.pdf", as_attachment=True)
-
-@app.route('/downloadcvsk')
-def downloadcvsk():
-    return send_from_directory('static',
-                               filename="images/cvskDominikBalga.pdf", as_attachment=True)
-
-@app.route('/downloadvbacert')
-def downloadvbacert():
-    return send_from_directory('static',
-                               filename="images/VBAcertificate.pdf", as_attachment=True)
-
 
 @app.route('/deleteproject/<int:id>')
 @login_required
