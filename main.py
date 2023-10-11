@@ -18,11 +18,11 @@ class CertificateNameConverter(BaseConverter):
         return str(value)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "test"#os.getenv("secretkey")
-secret = "xd" #os.getenv("secret")
+app.config['SECRET_KEY'] = os.getenv("secretkey")
+secret = os.getenv("secret")
 Bootstrap(app)
 ckeditor = CKEditor(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = r"sqlite:///C:/Users/Dominik/OneDrive/Počítač/Repos/testdb/dtps.db" #os.getenv("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
