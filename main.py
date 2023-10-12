@@ -10,6 +10,8 @@ from pathlib import Path
 import smtplib
 import os
 
+THIS_FOLDER = Path(__file__).parent.resolve()
+
 class CertificateNameConverter(BaseConverter):
     def to_python(self, value):
         return value
@@ -132,7 +134,7 @@ def myprojects():
 
 app.url_map.converters['certificate'] = CertificateNameConverter
 
-certificates_path = Path("./static/images/cert")
+certificates_path = Path(f"{THIS_FOLDER}/static/images/cert")
 certificates = [certificate.stem for certificate in certificates_path.iterdir() if certificate.is_file()]
 @app.route('/downloadcert/<certificate:certificate_name>')
 def download_cert(certificate_name):
