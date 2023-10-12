@@ -145,4 +145,7 @@ dmypy.json
 # profiling data
 .prof
 
+#poetry
+poetry.lock
+
 # End of https://www.toptal.com/developers/gitignore/api/flask
