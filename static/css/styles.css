@@ -28,6 +28,7 @@ font-family: 'Asap', sans-serif;
 .pozdrav{
 margin:0% auto;
 color: black;
+padding-bottom: 20px;
 }
 .non.index{
 text-align: center;
@@ -113,7 +114,9 @@ padding: 3% 10%;
 line-height: 2.5;
 font-size : 1.4rem;
 color : #f6f4e6;
+min-height: 60vh;
 }
+    
 p{
 margin : 0 0;
 padding-bottom: 10px;
