@@ -137,6 +137,7 @@ display: none;
 }
 @media screen and (max-width: 768px) {
 .content-mobile {display: block;}
+.center-block{ min-height: 90vh;}
 }
 
 .project{
